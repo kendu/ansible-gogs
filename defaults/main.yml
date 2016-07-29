@@ -1,0 +1,26 @@
+---
+# Default variables
+
+gogs_username: gogs
+gogs_home: "/home/{{ gogs_username }}"
+gogs_repo: 'deb https://deb.packager.io/gh/pkgr/gogs trusty pkgr'
+gogs_repo_key: "https://deb.packager.io/key"
+gogs_config_directory: "/opt/gogs/custom/conf"
+gogs_database_name: gogs
+gogs_database_user: gogs
+gogs_database_host: 127.0.0.1:3306
+gogs_database_password_file: gogs_database_password
+gogs_ssh_port: 56871
+gogs_title: "My gogs"
+gogs_url: "gogs.local"
+gogs_protocol: "http"
+gogs_port: "6000"
+gogs_ssl_cert:
+gogs_ssl_key:
+gogs_github_oauth: "false"
+gogs_google_oauth: "false"
+
+gogs_github_oauth_client_id: ""
+gogs_github_oauth_client_secret: ""
+gogs_google_oauth_client_id: ""
+gogs_google_oauth_client_secret: ""

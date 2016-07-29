@@ -1,0 +1,13 @@
+---
+# Monitor role tasks
+
+- name: Install requirements
+  apt:
+    name: "{{ item }}"
+    state: latest
+    force: yes
+  with_items:
+      - python-passlib
+      - python-mysqldb
+
+- include: gogs.yml

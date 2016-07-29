@@ -1,0 +1,63 @@
+---
+# Gogs installation
+
+# Create user
+- name: Create gogs user
+  user:
+    name: "{{ gogs_username }}"
+    home: "{{ gogs_home }}"
+    shell: /bin/bash
+    state: present
+
+- name: Create gogs database
+  mysql_db:
+    name: "{{ gogs_database_name }}"
+    state: present
+    login_host: 127.0.0.1
+
+- name: Create gogs database user
+  mysql_user:
+    name: "{{ gogs_database_user}}"
+    state: present
+    password: "{{ lookup('password', gogs_database_password_file + ' length=64' ) }}"
+    priv: "{{ gogs_database_name }}.*:ALL"
+
+# Setup gogs
+
+- name: Add gogs repo key
+  apt_key:
+    url: "{{ gogs_repo_key }}"
+    state: present
+
+- name: Add gogs repo
+  apt_repository:
+    repo: "{{ gogs_repo }}"
+    state: present
+
+- name: Install gogs
+  apt:
+    name: gogs
+    state: latest
+    force: yes
+
+- name: Create config directory
+  file:
+    dest: "{{ gogs_config_directory }}"
+    state: directory
+
+- name: Configure gogs
+  template:
+    src: "gogs_config"
+    dest: "{{ gogs_config_directory }}/app.ini"
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart gogs
+
+- name: Add gogs nginx config
+  template:
+    src: "gogs_nginx_config"
+    dest: /etc/nginx/sites-enabled/gogs.conf
+    owner: root
+    group: root
+    mode: 0644
